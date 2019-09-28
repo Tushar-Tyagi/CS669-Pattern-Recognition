@@ -9,14 +9,14 @@ def main():
 	data1_2 = np.loadtxt(fname = './Data/LS_Group04/Class2.txt')
 	data1_3 = np.loadtxt(fname = './Data/LS_Group04/Class3.txt')
 
-	data2 = np.loadtxt(fname = './Data/NLS/data2.txt')#Class 1: 2446 , Class 2: 2447
+	data2 = np.loadtxt(fname = './Data/NLS/data3.txt')#Class 1: 2446 , Class 2: 2447
 	data2_1 = data2[0:300]
-	data2_2 = data2[300:500]
-	data2_3 = data2[500:1000]
+	data2_2 = data2[300:800]
+	data2_3 = data2[800:1800]
 
-	data3_1 = np.loadtxt(fname = './Data/rd_group1/class1.txt')
-	data3_2 = np.loadtxt(fname = './Data/rd_group1/class2.txt')
-	data3_3 = np.loadtxt(fname = './Data/rd_group1/class3.txt')
+	data3_1 = np.loadtxt(fname = './Data/rd_group2/class1.txt')
+	data3_2 = np.loadtxt(fname = './Data/rd_group2/class2.txt')
+	data3_3 = np.loadtxt(fname = './Data/rd_group2/class3.txt')
 
 	data1_1x, data1_1y = data1_1[:(int)((data1_1.shape[0])*0.75)], data1_1[int((data1_1.shape[0])*0.75):]
 	data1_2x, data1_2y = data1_2[:(int)((data1_2.shape[0])*0.75)], data1_2[int((data1_2.shape[0])*0.75):]
@@ -100,9 +100,18 @@ def main():
 		parameters = model.compile(data2_1x,data2_2x,data2_3x,case_choice)
 		results = model.test(data2_1y, data2_2y, data2_3y, parameters, priori2)
 		acc = (results[0][0]+results[1][0]+results[2][0])/results[3]
-		prec1 = results[0][0]/(results[0][0]+results[0][3])
-		prec2 = results[1][0]/(results[1][0]+results[1][3])
-		prec3 = results[2][0]/(results[2][0]+results[2][3])
+		if results[0][0]+results[0][3] == 0:
+			prec1 = float("inf")
+		else:
+			prec1 = results[0][0]/(results[0][0]+results[0][3])
+		if results[1][0]+results[1][3] == 0:
+			prec2 = float("inf")
+		else:
+			prec2 = results[1][0]/(results[1][0]+results[1][3])
+		if results[2][0]+results[2][3] == 0:
+			prec3 = float("inf")
+		else:
+			prec3 = results[2][0]/(results[2][0]+results[2][3])
 		rec1 = results[0][0]/(results[0][0]+results[0][2])
 		rec2 = results[1][0]/(results[1][0]+results[1][2])
 		rec3 = results[2][0]/(results[2][0]+results[2][2])
