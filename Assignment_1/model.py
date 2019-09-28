@@ -25,8 +25,8 @@ def compile(train_data1, train_data2, train_data3, case):
 		cov1 = np.diag(np.diag(cov1))
 		cov2 = np.diag(np.diag(cov2))
 		cov3 = np.diag(np.diag(cov3))
-
-		return [[mean1,cov1],[mean2,cov2],[mean3,cov3]]
+		cov=(cov1+cov2+cov3)/3
+		return [[mean1,cov],[mean2,cov],[mean3,cov]]
 
 	elif case == 2:
 		#Full Covariance matrix for all the classes is the same and is Σ.
@@ -68,6 +68,19 @@ def valCalc(data, classPara, classPriori):
 	posterior = 1/((np.power(2*np.pi,d/2))*(np.sqrt((np.linalg.det(classPara[1])))))
 	posterior = posterior*np.exp(-0.5*(np.matmul(np.matmul(data-classPara[0],np.linalg.inv(classPara[1])),(data-classPara[0]))))
 	return posterior*classPriori
+
+def predict(data, parameters, classPriories):
+	p1 = valCalc(data, parameters[0], classPriories[0])
+	p2 = valCalc(data, parameters[1], classPriories[1])
+	p3 = valCalc(data, parameters[2], classPriories[2])
+
+	if p1>p2 and p1>p3:
+		return 0
+	elif p2>p3 and p2>p1:
+		return 1
+	else:
+		return 2
+
 
 def test(testData1, testData2, testData3, parameters, classPriories):
 	#parameters: list of lists.

@@ -2,16 +2,17 @@ import numpy as np
 import os
 import urllib.request
 import model
+import plot
 
 def main():
-	data1_1 = np.loadtxt(fname = './Data/LS_Group01/Class1.txt')
-	data1_2 = np.loadtxt(fname = './Data/LS_Group01/Class2.txt')
-	data1_3 = np.loadtxt(fname = './Data/LS_Group01/Class3.txt')
+	data1_1 = np.loadtxt(fname = './Data/LS_Group04/Class1.txt')
+	data1_2 = np.loadtxt(fname = './Data/LS_Group04/Class2.txt')
+	data1_3 = np.loadtxt(fname = './Data/LS_Group04/Class3.txt')
 
-	data2 = np.loadtxt(fname = './Data/NLS_Group01/data1.txt')#Class 1: 2446 , Class 2: 2447
-	data2_1 = data2[0:500]
-	data2_2 = data2[500:1000]
-	data2_3 = data2[1000:2000]
+	data2 = np.loadtxt(fname = './Data/NLS/data2.txt')#Class 1: 2446 , Class 2: 2447
+	data2_1 = data2[0:300]
+	data2_2 = data2[300:500]
+	data2_3 = data2[500:1000]
 
 	data3_1 = np.loadtxt(fname = './Data/rd_group1/class1.txt')
 	data3_2 = np.loadtxt(fname = './Data/rd_group1/class2.txt')
@@ -93,6 +94,7 @@ def main():
 		print('Mean Recall: {}\n'.format((rec1+rec2+rec3)/3))
 		print('Mean F-Score: {}\n'.format((fs1+fs2+fs3)/3))
 
+		plot.plot([data1_1x, data1_2x, data1_3x], [data1_1y, data1_2y, data1_3y], parameters, priori1)
 
 	elif data_choice == 'N':
 		parameters = model.compile(data2_1x,data2_2x,data2_3x,case_choice)
@@ -130,6 +132,8 @@ def main():
 		print('Mean Recall: {}\n'.format((rec1+rec2+rec3)/3))
 		print('Mean F-Score: {}\n'.format((fs1+fs2+fs3)/3))
 
+		plot.plot([data2_1x, data2_2x, data2_3x], [data2_1y, data2_2y, data2_3y], parameters, priori2)
+
 	elif data_choice == 'R':
 		parameters = model.compile(data3_1x,data3_2x,data3_3x,case_choice)
 		results = model.test(data3_1y,data3_2y,data3_3y, parameters, priori3)
@@ -165,6 +169,8 @@ def main():
 		print('Mean Precision: {}\n'.format((prec1+prec2+prec3)/3))
 		print('Mean Recall: {}\n'.format((rec1+rec2+rec3)/3))
 		print('Mean F-Score: {}\n'.format((fs1+fs2+fs3)/3))
+
+		plot.plot([data3_1x, data3_2x, data3_3x], [data3_1y, data3_2y, data3_3y], parameters, priori3)
 
 	else:
 		print('Wrong data choice entered.\n Exiting')
